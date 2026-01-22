@@ -131,15 +131,6 @@ The roadmap is flexible and may evolve based on community feedback and contribut
 
 ---
 
-## 🧭 Contribution Guidance
-
-- Contributors should choose tasks aligned with their skill level
-- Beginners are encouraged to start with **Phase 1 or 2 issues**
-- Advanced contributors may take ownership of Phase 3+ features
-- Each roadmap item may be broken into multiple GitHub issues
-
----
-
 ## 🔄 Roadmap Updates
 
 This roadmap is:
