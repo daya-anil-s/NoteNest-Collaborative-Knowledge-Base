@@ -125,7 +125,8 @@ Roles do NOT:
 
 ## Final Note
 
-Roles and permissions are central to NoteNest.
-Clear implementation and documentation of RBAC is more important than advanced features.
+Great documentation is just as important as great code.
 
-Build it clearly, securely, and collaboratively 🚀
+By following these guidelines, you're helping make NoteNest more accessible, educational, and contributor-friendly. Every improvement to our docs helps someone learn and contribute.
+
+Thank you for caring about documentation! 🚀📝
