@@ -207,6 +207,7 @@ export default function NotesPage() {
                   padding: "var(--space-sm) var(--space-md)",
                   minHeight: "36px",
                 }}
+                aria-label="Create a new note"
               >
                 Create Note
               </button>
@@ -219,6 +220,7 @@ export default function NotesPage() {
                   color: "var(--color-text-muted)",
                 }}
                 title={CREATE_RESTRICTED_TITLE}
+                aria-label="Create note not allowed - insufficient permissions"
               >
                 Create Note
               </span>
@@ -359,6 +361,7 @@ export default function NotesPage() {
                   onClick={() => setViewingNote(note)}
                   className="flex-1 min-w-0 py-4 pr-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 rounded-lg"
                   style={{ "--tw-ring-color": "var(--color-info)" } as React.CSSProperties}
+                  aria-label={`View note: ${note.title}`}
                 >
                   <span className="font-semibold block truncate" style={{ color: "var(--color-text-primary)", fontSize: "var(--font-size-base)" }}>
                     {note.title}
@@ -443,14 +446,14 @@ export default function NotesPage() {
               >
                 New note
               </h2>
-              <form onSubmit={handleSubmitCreate}>
+              <form onSubmit={handleSubmitCreate} noValidate>
                 <div className="mb-4">
                   <label
                     htmlFor="create-note-title-input"
                     className="block text-sm font-medium mb-2"
                     style={{ color: "var(--color-text-primary)" }}
                   >
-                    Title <span style={{ color: "var(--color-error)" }}>*</span>
+                    Title <span style={{ color: "var(--color-error)" }} aria-label="required">*</span>
                   </label>
                   <input
                     id="create-note-title-input"
@@ -463,7 +466,8 @@ export default function NotesPage() {
                     }}
                     placeholder="Note title"
                     autoFocus
-                    className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-offset-1"
+                    required
+                    className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     style={{
                       borderColor: createTitleError ? "var(--color-error)" : "var(--color-border-light)",
                       color: "var(--color-text-primary)",
@@ -471,15 +475,16 @@ export default function NotesPage() {
                     }}
                     aria-invalid={!!createTitleError}
                     aria-describedby={createTitleError ? "create-title-error" : "create-title-hint"}
+                    aria-required="true"
                   />
                   <div className="flex justify-between items-baseline mt-1">
                     {createTitleError ? (
-                      <p id="create-title-error" className="field-error">
+                      <p id="create-title-error" className="field-error" role="alert">
                         {createTitleError}
                       </p>
                     ) : (
                       <span id="create-title-hint" className="text-xs" style={{ color: "var(--color-text-muted)" }}>
-                        {createTitle.length}/{TITLE_MAX_LENGTH}
+                        {createTitle.length}/{TITLE_MAX_LENGTH} characters
                       </span>
                     )}
                   </div>
@@ -498,7 +503,7 @@ export default function NotesPage() {
                     onChange={(e) => setCreateContent(e.target.value)}
                     placeholder="Add some content…"
                     rows={4}
-                    className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-offset-1 resize-y"
+                    className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
                     style={{
                       borderColor: "var(--color-border-light)",
                       color: "var(--color-text-primary)",
