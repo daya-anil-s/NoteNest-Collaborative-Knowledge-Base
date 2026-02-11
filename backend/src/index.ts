@@ -13,6 +13,15 @@ import { authenticateToken } from './middleware/auth';
 
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (missingVars.length > 0) {
+  console.error(`❌ Missing required environment variables: ${missingVars.join(', ')}`);
+  console.error('Please create a .env file based on .env.example and set the required variables.');
+  process.exit(1);
+}
+
 const app = express();
 const server = createServer(app);
 const io = new SocketIOServer(server, {
@@ -29,7 +38,7 @@ app.use(express.json());
 app.use(requestLoggingMiddleware);
 
 // Connect to MongoDB
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/notenest";
+const MONGO_URI = process.env.MONGO_URI!;
 mongoose.connect(MONGO_URI)
   .then(() => console.log("📊 Connected to MongoDB"))
   .catch(err => console.error("MongoDB connection error:", err));
