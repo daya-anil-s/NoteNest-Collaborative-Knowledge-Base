@@ -10,8 +10,8 @@ import Workspace from '../src/models/Workspace';
 // Create a test app instance
 const app = express();
 app.use(express.json());
-app.use('/api/groups', require('../src/routes/groups'));
-app.use('/api/permissions', require('../src/routes/permissions'));
+app.use('/api/groups', require('../src/routes/groups').default);
+app.use('/api/permissions', require('../src/routes/permissions').default);
 
 describe('RBAC System', () => {
   let adminUser: any;

@@ -63,7 +63,7 @@ export const resolvePermissions = async (userId: string, resourcePath: string): 
     try {
       const workspace = await require('../models/Workspace').default.findById(workspaceId);
       if (workspace) {
-        const member = workspace.members.find((m: any) => m.userId === userId);
+        const member = workspace.members.find((m: any) => m.userId.toString() === userId);
         if (member) {
           // Grant permissions based on workspace role
           switch (member.role) {
@@ -142,6 +142,9 @@ export const requirePermission = (requiredPerm: string) => {
       }
     } else if (req.params.id) {
       resourcePath = req.params.id;
+    } else if (req.body.workspaceId && req.path === '/') {
+      // For POST /api/notes, workspaceId is in body
+      resourcePath = req.body.workspaceId;
     } else {
       resourcePath = req.baseUrl + req.path;
     }

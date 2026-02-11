@@ -24,7 +24,7 @@ describe('Notes API', () => {
       email: 'test@example.com',
       password: 'hashedpassword',
       name: 'Test User',
-      role: 'viewer'
+      role: 'editor'
     });
     await testUser.save();
 
@@ -33,7 +33,7 @@ describe('Notes API', () => {
       name: 'Test Workspace',
       description: 'A test workspace',
       owner: testUser._id.toString(),
-      members: [{ userId: testUser._id.toString(), role: 'viewer' }]
+      members: [{ userId: testUser._id.toString(), role: 'editor' }]
     });
     await testWorkspace.save();
 

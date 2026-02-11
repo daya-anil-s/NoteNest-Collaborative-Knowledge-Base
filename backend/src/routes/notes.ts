@@ -39,7 +39,7 @@ router.get('/workspace/:workspaceId', authenticateToken, validateAccessLink, req
 });
 
 // Create a new note
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authenticateToken, requirePermission('write'), async (req: AuthRequest, res: Response) => {
   try {
     const { title, content, workspaceId, authorId } = req.body;
     const note = new Note({
@@ -90,7 +90,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // Update a note
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', authenticateToken, requirePermission('write'), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { title, content, authorId } = req.body;
@@ -129,7 +129,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 // Delete a note
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authenticateToken, requirePermission('write'), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { authorId } = req.body;
@@ -164,7 +164,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
 });
 
 // Get version history for a note
-router.get('/:id/versions', async (req: Request, res: Response) => {
+router.get('/:id/versions', authenticateToken, requirePermission('read'), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const versions = await NoteVersion.find({ noteId: id }).sort({ versionNumber: -1 });
@@ -194,7 +194,7 @@ router.get('/:id/versions', async (req: Request, res: Response) => {
 });
 
 // Restore a note to a specific version
-router.post('/:id/restore', async (req: Request, res: Response) => {
+router.post('/:id/restore', authenticateToken, requirePermission('write'), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { versionNumber, authorId } = req.body;
@@ -291,7 +291,7 @@ router.post('/:id/fork', async (req: Request, res: Response) => {
 });
 
 // Get diff between two versions
-router.get('/:id/diff', async (req: Request, res: Response) => {
+router.get('/:id/diff', authenticateToken, requirePermission('read'), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
     const { fromVersion, toVersion } = req.query;
