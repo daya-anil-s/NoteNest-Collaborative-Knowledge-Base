@@ -132,6 +132,22 @@ export default function NotesPage() {
     setShowCreateModal(true);
   }, [canCreateNote]);
 
+  useEffect(() => {
+  // Do not register shortcut if user cannot create notes
+  if (!canCreateNote) return;
+
+  const handleCreateShortcut = () => {
+    handleCreateNote();
+  };
+
+  window.addEventListener("shortcut-create-note", handleCreateShortcut);
+
+  return () => {
+    window.removeEventListener("shortcut-create-note", handleCreateShortcut);
+  };
+}, [canCreateNote, handleCreateNote]);
+
+
   const handleCloseCreateModal = useCallback(() => {
     if (isSubmittingCreate) return;
     setShowCreateModal(false);
