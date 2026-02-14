@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  CheckCircle2, 
-  XCircle, 
-  Type, 
-  List, 
-  Code, 
-  AlignLeft, 
-  ArrowRight 
+import {
+  CheckCircle2,
+  XCircle,
+  Type,
+  List,
+  Code,
+  AlignLeft
 } from "lucide-react";
+import { Section, Container } from "@/components/ui";
+import { COLORS } from "@/lib/design-tokens";
 
 // Principles Data
 const principles = [
@@ -45,12 +46,12 @@ const BadNote = () => (
       <p>Setup stuff</p>
       <p>Just install things and run the command.</p>
       <div className="bg-black/5 p-4 rounded-lg">
-        npm install<br/>
+        npm install<br />
         start
       </div>
       <p>its easy.</p>
     </div>
-    
+
     {/* Messy overlay feel */}
     <div className="absolute inset-0 bg-red-500/5 pointer-events-none" />
   </div>
@@ -63,7 +64,7 @@ const GoodNote = () => (
     </div>
     <div className="space-y-4 text-brand-dark">
       <h3 className="text-xl font-bold font-serif border-b border-black/5 pb-2">Local Development Setup</h3>
-      
+
       <div className="space-y-2">
         <h4 className="text-sm font-bold uppercase tracking-wider text-brand-dark/60">Prerequisites</h4>
         <ul className="list-disc list-inside text-sm pl-2 space-y-1">
@@ -77,7 +78,7 @@ const GoodNote = () => (
         <div className="bg-brand-dark text-white p-4 rounded-xl font-mono text-xs shadow-inner">
           <p className="text-green-400"># 1. Install dependencies</p>
           <p>npm install</p>
-          <br/>
+          <br />
           <p className="text-green-400"># 2. Start dev server</p>
           <p>npm run dev</p>
         </div>
@@ -90,11 +91,11 @@ const BestPractices = () => {
   const [activeView, setActiveView] = useState<'bad' | 'good'>('good');
 
   return (
-    <section className="py-24 bg-brand-beige overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+    <Section spacing="large" background="bg-brand-beige" className="overflow-hidden">
+      <Container>
+
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          
+
           {/* Left: Content & Principles */}
           <div className="space-y-10">
             <motion.div
@@ -105,20 +106,20 @@ const BestPractices = () => {
             >
               NoteNest Methodology
             </motion.div>
-            
-            <motion.h2 
+
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-4xl md:text-5xl font-serif font-black text-brand-dark leading-tight"
             >
-              Write notes that <br/>
+              Write notes that <br />
               <span className="text-brand-accent">actually get read.</span>
             </motion.h2>
 
             <div className="grid gap-6">
               {principles.map((p, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -142,13 +143,13 @@ const BestPractices = () => {
           <div className="relative">
             {/* Toggle Switch */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex bg-brand-dark rounded-full p-1 shadow-xl">
-              <button 
+              <button
                 onClick={() => setActiveView('bad')}
                 className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${activeView === 'bad' ? 'bg-white text-brand-dark' : 'text-white/60 hover:text-white'}`}
               >
                 Weak
               </button>
-              <button 
+              <button
                 onClick={() => setActiveView('good')}
                 className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${activeView === 'good' ? 'bg-white text-brand-dark' : 'text-white/60 hover:text-white'}`}
               >
@@ -157,25 +158,25 @@ const BestPractices = () => {
             </div>
 
             <div className="relative h-[600px] w-full max-w-[500px] mx-auto perspective-1000 group">
-               {/* Background Decorative Element */}
-               <div className="absolute inset-0 bg-brand-dark rounded-[3rem] rotate-3 opacity-10 scale-95 group-hover:rotate-6 transition-transform duration-500 will-change-transform" />
-               
-               <div className="relative h-full bg-white rounded-[2.5rem] shadow-2xl p-2 border-4 border-white overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.div 
-                      key={activeView}
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                      className="h-full w-full"
-                    >
-                      {activeView === 'bad' ? <BadNote /> : <GoodNote />}
-                    </motion.div>
-                  </AnimatePresence>
-               </div>
+              {/* Background Decorative Element */}
+              <div className="absolute inset-0 bg-brand-dark rounded-[3rem] rotate-3 opacity-10 scale-95 group-hover:rotate-6 transition-transform duration-500 will-change-transform" />
+
+              <div className="relative h-full bg-white rounded-[2.5rem] shadow-2xl p-2 border-4 border-white overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeView}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="h-full w-full"
+                  >
+                    {activeView === 'bad' ? <BadNote /> : <GoodNote />}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-            
+
             {/* Floating 'Try it' text or comparison hint if needed */}
             <div className="text-center mt-8 text-sm font-bold text-brand-dark/40 uppercase tracking-widest animate-pulse">
               Toggle to compare
@@ -183,8 +184,8 @@ const BestPractices = () => {
           </div>
 
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   );
 };
 
