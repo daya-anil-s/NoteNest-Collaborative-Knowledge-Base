@@ -350,14 +350,14 @@ export default function NotesPage() {
                     }
                     action={
                       canCreateNote ? (
-                       <button
-  type="button"
-  onClick={handleCreateNote}
-  className="btn-primary button-glow"
-  style={{
-    boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)"
-  }}
->
+                        <button
+                          type="button"
+                          onClick={handleCreateNote}
+                          className="btn-primary button-glow"
+                          style={{
+                            boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)"
+                          }}
+                        >
 
 
                           <span className="flex items-center gap-2">
@@ -444,14 +444,14 @@ export default function NotesPage() {
                         {(canDeleteNote && (
                           <div className="flex items-center gap-1 pr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                             <button
-  onClick={(e) => {
-    e.stopPropagation();
-    handleDeleteNote(note.id);
-  }}
-  className="btn-icon hover:bg-red-50"
-  aria-label={`Delete ${note.title}`}
-  title="Delete note"
->
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteNote(note.id);
+                              }}
+                              className="btn-icon hover:bg-red-50"
+                              aria-label={`Delete ${note.title}`}
+                              title="Delete note"
+                            >
 
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -540,6 +540,13 @@ export default function NotesPage() {
                     aria-describedby={createTitleError ? "create-title-error" : "create-title-hint"}
                     aria-required="true"
                   />
+                  <p
+  className="text-xs mt-1"
+  style={{ color: "var(--color-text-muted)" }}
+>
+  This title will be shown in your notes list
+</p>
+
                   <div className="flex justify-between items-baseline mt-1">
                     {createTitleError ? (
                       <p id="create-title-error" className="field-error" role="alert">
@@ -573,6 +580,13 @@ export default function NotesPage() {
                       fontSize: "var(--font-size-base)",
                     }}
                   />
+                  <p
+  className="text-xs mt-1"
+  style={{ color: "var(--color-text-muted)" }}
+>
+  Optional details or notes you want to remember
+</p>
+
                 </div>
                 <div className="flex gap-3 justify-end">
                   <button
@@ -627,13 +641,13 @@ export default function NotesPage() {
               >
                 {viewingNote.title}
               </h2>
-             <button
-  type="button"
-  onClick={() => setViewingNote(null)}
-  className="btn-icon absolute top-3 right-3"
-  aria-label="Close"
-  title="Close"
->
+              <button
+                type="button"
+                onClick={() => setViewingNote(null)}
+                className="btn-icon absolute top-3 right-3"
+                aria-label="Close"
+                title="Close"
+              >
 
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
