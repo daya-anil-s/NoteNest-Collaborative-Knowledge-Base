@@ -240,6 +240,7 @@ setCreateSuccessMessage("Note created successfully.");
         />
         <main
           className="flex-1 overflow-auto relative flex justify-center"
+            aria-busy={isLoading}
           style={{
             background: "var(--color-background)",
             backgroundImage: "linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, rgba(139, 92, 246, 0.02) 100%)"
