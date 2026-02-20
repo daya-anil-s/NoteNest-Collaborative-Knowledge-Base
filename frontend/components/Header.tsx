@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import WorkspaceSelector from "@/components/WorkspaceSelector";
 import { useUserRole } from "@/contexts/UserRoleContext";
 import Button from "@/components/Button";
@@ -20,6 +21,10 @@ export default function Header({
 }: HeaderProps) {
   const { isAuthenticated, logout } = useUserRole();
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
+
   return (
     <>
       {/* Skip to main content link for keyboard users */}
@@ -32,19 +37,19 @@ export default function Header({
 
       <header
         className="flex items-center gap-4 border-b px-6 py-4"
+        role="banner"
         style={{
-          background: "#000000", // ✅ FORCE BLACK
-          borderColor: "rgba(255,255,255,0.08)", // ✅ Dark border
+          background: "#000000",
+          borderColor: "rgba(255,255,255,0.08)",
           color: "#FFFFFF",
         }}
-        role="banner"
       >
         <WorkspaceSelector />
 
         <h1
-          className="text-xl font-semibold shrink-0"
-          style={{ color: "#FFFFFF" }} // ✅ White text
           id="page-title"
+          className="text-xl font-semibold shrink-0"
+          style={{ color: "#FFFFFF" }}
         >
           {title}
         </h1>
@@ -54,17 +59,31 @@ export default function Header({
             <label htmlFor="search-input" className="sr-only">
               Search notes
             </label>
+
             <input
               id="search-input"
               type="search"
               data-shortcut="search"
               placeholder="Search notes…"
               aria-label="Search notes"
+              value={search}
+              onChange={(e) => {
+                const value = e.target.value;
+                const params = new URLSearchParams(searchParams.toString());
+
+                if (value) {
+                  params.set("search", value);
+                } else {
+                  params.delete("search");
+                }
+
+                router.replace(`?${params.toString()}`);
+              }}
               className="w-full rounded-lg border px-3 py-2 text-sm transition-colors placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               style={{
                 borderColor: "rgba(255,255,255,0.12)",
                 color: "#FFFFFF",
-                background: "#0B0B0B", // ✅ Dark input background
+                background: "#0B0B0B",
                 fontSize: "var(--font-size-sm)",
               }}
             />

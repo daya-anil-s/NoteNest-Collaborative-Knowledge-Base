@@ -16,6 +16,7 @@ interface Note {
   id: number;
   title: string;
   content?: string;
+  createdAt: number;
 }
 
 function loadNotesFromStorage(): Note[] {
@@ -35,13 +36,26 @@ function saveNotesToStorage(notes: Note[]) {
   }
 }
 
+function formatRelativeTime(timestamp: number) {
+  const diff = Date.now() - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(minutes / 60);
+
+  if (minutes < 1) return "Created just now";
+  if (minutes < 60)
+    return `Created ${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+  return `Created ${hours} hour${hours > 1 ? "s" : ""} ago`;
+}
+
 export default function NotesPage() {
   const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
   const { canCreateNote, isViewer } = usePermissions();
 
   const [notes, setNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createTitle, setCreateTitle] = useState("");
@@ -82,11 +96,13 @@ export default function NotesPage() {
                 id: 1,
                 title: "Project Overview",
                 content: "A high-level overview of the project.",
+                createdAt: Date.now() - 1000 * 60 * 60, // 1 hour ago
               },
               {
                 id: 2,
                 title: "Meeting Notes",
                 content: "Key points from the last team sync.",
+                createdAt: Date.now() - 1000 * 60 * 5, // 5 minutes ago
               },
             ]
       );
@@ -95,6 +111,8 @@ export default function NotesPage() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  
 
   useEffect(() => {
     if (!isLoading) saveNotesToStorage(notes);
@@ -152,7 +170,9 @@ export default function NotesPage() {
           id: Date.now(),
           title,
           content: createContent.trim() || undefined,
+          createdAt: Date.now(),
         };
+
         setNotes((prev) => [...prev, newNote]);
       }
 
@@ -248,6 +268,11 @@ export default function NotesPage() {
                   >
                     <div>
                       <h4 className="font-semibold">{note.title}</h4>
+
+                      <p className="text-xs text-gray-500 mt-1">
+                        {formatRelativeTime(note.createdAt)}
+                      </p>
+
                       <p className="text-sm text-gray-600 mt-1">
                         {note.content || "No content"}
                       </p>
@@ -308,21 +333,21 @@ export default function NotesPage() {
             </h2>
 
             <form onSubmit={handleSubmitCreate} noValidate>
-              <input
-                type="text"
-                autoFocus
-                value={createTitle}
-                onChange={(e) => {
-                  setCreateTitle(e.target.value);
-                  setCreateTitleError("");
-                }}
-                className="w-full border p-2 mb-2"
-                placeholder="Title"
-              />
+             <input
+  type="text"
+  autoFocus
+  value={createTitle}
+  onChange={(e) => {
+    setCreateTitle(e.target.value);
+    setCreateTitleError("");
+  }}
+  className="w-full border p-2 mb-2"
+  placeholder="Title"
+/>
 
-              <p className="text-xs text-gray-500 mb-2">
-                Max {TITLE_MAX_LENGTH} characters
-              </p>
+             <p className="text-xs text-gray-500 mb-2">
+  {createTitle.length} / {TITLE_MAX_LENGTH} characters
+</p>
 
               {createTitleError && (
                 <p className="text-sm text-red-600 mb-2">
@@ -351,9 +376,7 @@ export default function NotesPage() {
 
                 <button
                   type="submit"
-                  className="btn-primary"
-                  disabled={isSubmitting}
-                >
+className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"disabled={isSubmitting || createTitle.trim().length === 0}                >
                   {isSubmitting
                     ? "Saving..."
                     : editingNoteId !== null
